@@ -1,6 +1,6 @@
-import * as THREE from 'https://cdn.jsdelivr.net/npm/three@0.118/build/three.module.js';
-import { FBXLoader } from 'https://cdn.jsdelivr.net/npm/three@0.118.1/examples/jsm/loaders/FBXLoader.js';
-// import { OrbitControls } from 'https://cdn.jsdelivr.net/npm/three@0.118/examples/jsm/controls/OrbitControls.js';
+import * as THREE from 'https://cdn.jsdelivr.net/npm/three@0.127.0/build/three.module.js';
+import { FBXLoader } from 'https://cdn.jsdelivr.net/npm/three@0.127.0/examples/jsm/loaders/FBXLoader.js';
+// import { OrbitControls } from 'https://cdn.jsdelivr.net/npm/three@0.127.0/examples/jsm/controls/OrbitControls.js';
 
 addEventListener('DOMContentLoaded', () => new Model());
 
@@ -44,8 +44,9 @@ class Model {
         const fbxLoader = new FBXLoader();
         fbxLoader.load('./assets/T_Pose_Bot.fbx', (object) => {
             object.scale.setScalar(0.1);
-            // object.position.x = 0;
-            // object.quaternion['_x'] = 0;
+            object.position.set(1, 1, 1);
+            object.quaternion.set(0.1, 0.1, 0.1, 0);
+            console.log(object);
             this.scene.add(object);
         });
     }

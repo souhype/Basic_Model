@@ -11,30 +11,50 @@ class Model {
 
     init() {
         this.scene = new THREE.Scene();
+        // this.scene.background = new THREE.Color('#1a1a1a');
 
-        const cameraSettings = {
-            fov: 60,
-            aspectRatio: innerWidth / innerHeight,
-            near: 0.1,
-            far: 1000,
-        };
-        this.camera = new THREE.PerspectiveCamera(
-            cameraSettings.fov,
-            cameraSettings.aspectRatio,
-            cameraSettings.near,
-            cameraSettings.far
-        );
-        this.camera.position.set(0, 10, 25);
+        this.camera = new THREE.PerspectiveCamera(45, innerWidth / innerHeight, 1, 1000);
+        this.camera.position.set(0, 100, 350);
+        // this.camera.lookAt(0, 10, 0);
 
         this.renderer = new THREE.WebGLRenderer({
             antialias: true,
             canvas: document.querySelector('canvas'),
         });
         this.renderer.setSize(innerWidth * 0.95, innerHeight * 0.95);
+        // this.renderer.shadowMap.enabled = true;
 
+        const hemiLight = new THREE.HemisphereLight();
         const directLight = new THREE.DirectionalLight();
-        const ambLight = new THREE.AmbientLight();
-        this.scene.add(directLight, ambLight);
+        // directLight.castShadow = true;
+        // directLight.shadow.camera.top = 200;
+        // directLight.shadow.camera.bottom = -100;
+        // directLight.shadow.camera.left = -120;
+        // directLight.shadow.camera.right = 120;
+
+        const wall = new THREE.Mesh(
+            new THREE.PlaneGeometry(900, 900),
+            new THREE.MeshPhongMaterial({ color: 'white', depthWrite: false })
+        );
+
+        const ground = new THREE.Mesh(
+            new THREE.PlaneGeometry(900, 900),
+            new THREE.MeshPhongMaterial({ color: '#808080', depthWrite: false })
+        );
+        ground.rotation.x = -Math.PI * 0.5;
+        // ground.receiveShadow = true;
+
+        const groundGrid = new THREE.GridHelper(1500, 20, 'black', 'black');
+        groundGrid.material.opacity = 0.1;
+        groundGrid.material.transparent = true;
+
+        const wallGrid = new THREE.GridHelper(700, 20, 'black', 'black');
+        wallGrid.material.opacity = 0.1;
+        wallGrid.material.transparent = true;
+        wallGrid.rotation.x = -Math.PI * 0.5;
+        wallGrid.position.set(0, 416, 0);
+
+        this.scene.add(hemiLight, directLight, ground, wall, groundGrid, wallGrid);
 
         this.loader();
         this.animate();
@@ -43,10 +63,7 @@ class Model {
     loader() {
         const fbxLoader = new FBXLoader();
         fbxLoader.load('./assets/T_Pose_Bot.fbx', (object) => {
-            object.scale.setScalar(0.1);
-            object.position.set(1, 1, 1);
-            object.quaternion.set(0.1, 0.1, 0.1, 0);
-            console.log(object);
+            // object.scale.setScalar(0.1);
             this.scene.add(object);
         });
     }

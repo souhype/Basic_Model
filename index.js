@@ -52,12 +52,12 @@ class Model {
         wallGrid.material.opacity = 0.1;
         wallGrid.material.transparent = true;
         wallGrid.rotation.x = -Math.PI * 0.5;
-        wallGrid.position.set(0, 416, 0);
+        wallGrid.position.set(0, 414, -10);
 
-        this.scene.add(hemiLight, directLight, ground, wall, groundGrid, wallGrid);
+        this.scene.add(groundGrid, wallGrid, hemiLight, directLight, ground, wall);
 
-        this.loader();
         this.animate();
+        this.loader();
     }
 
     loader() {
